@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Skills — Brandon</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="retro-brand">
+      <div class="brand-left">
+        <h1 class="brand-name">Brandon</h1>
+        <span class="brand-sub">Networks, Security and Game Dev</span>
+      </div>
+      <nav class="command-bar"><a href="index.html">home</a></nav>
+      <div class="brand-actions"><span id="statusClock" class="status-clock"></span></div>
+    </header>
+    <main class="retro-layout" style="grid-template-columns: 1fr; height:auto;">
+      <article class="terminal-container" style="height:auto;">
+        <div class="terminal-header"><div class="terminal-title">brandon@portfolio:~/skills</div></div>
+        <div class="terminal-body">
+          <div class="terminal-content">
+            <pre style="margin:0; white-space: pre-wrap;">
+brandon@portfolio:~/skills
+
+Security   : Network Security, Ethical Hacking, Cryptography
+Dev        : Python, Bash, GDScript
+Game Dev   : Game Design, Scripting, 2D/3D Development (Godot Engine)
+Tools      : Wireshark, Nmap, Metasploit, Git, Godot
+            </pre>
+          </div>
+        </div>
+      </article>
+    </main>
+    <script>setInterval(()=>{const c=document.getElementById('statusClock');if(c){const n=new Date();c.textContent=n.toLocaleTimeString();}},1000);(function(){try{var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+  </body>
+</html>

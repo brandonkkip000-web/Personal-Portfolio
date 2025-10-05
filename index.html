@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Portfolio of Brandon Kimutai Kiplangat — Cyber Security, Computer Networks & Game Development." />
+    <meta name="color-scheme" content="light dark">
+    <title>Brandon — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="dns-prefetch" href="//unpkg.com">
+    <!-- Prefetch internal pages to make navigation instant -->
+    <link rel="prefetch" href="about.html" as="document">
+    <link rel="prefetch" href="projects.html" as="document">
+    <link rel="prefetch" href="skills.html" as="document">
+    <link rel="prefetch" href="experience.html" as="document">
+    <link rel="prefetch" href="contact.html" as="document">
+    <link rel="prefetch" href="education.html" as="document">
+    <link rel="prefetch" href="certifications.html" as="document">
+    <link rel="prefetch" href="leadership.html" as="document">
+    <link rel="prefetch" href="BRANDON.png" as="image">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body class="landing">
+    <div id="root"><div style="padding:1rem;color:#b8ffcc;font-family:'IBM Plex Mono',monospace;">Loading UI…</div></div>
+
+    <!-- React via CDN -->
+    <script defer src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script defer src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <script>
+      window.addEventListener('load', function(){
+        setTimeout(function(){
+          if (!window.React || !window.ReactDOM) {
+            var el = document.getElementById('root');
+            el.innerHTML = '<div style="padding:1rem;color:#f99;font-family: monospace;">CDN scripts failed to load. Please check your internet connection or firewall and reload.</div>';
+          }
+        }, 1200);
+      });
+    </script>
+
+    <noscript>
+      <div style="padding:1rem;color:#b8ffcc; font-family: 'IBM Plex Mono', monospace;">This page requires JavaScript to run the interactive terminal.</div>
+    </noscript>
+    <script>
+      window.addEventListener('load', function(){
+      const { useEffect, useRef, useState, createElement: h } = React;
+
+      function Header(props){
+        const { onCmd } = props;
+        function link(href, label, onClick){
+          return onClick
+            ? h('a', { href, onClick: e=>{ e.preventDefault(); onClick(); } }, label)
+            : h('a', { href }, label);
+        }
+        return h('header', { className: 'retro-brand' },
+          h('div', { className: 'brand-left' },
+            h('h1', { className: 'brand-name' }, 'Brandon'),
+            h('span', { className: 'brand-sub' }, 'Networks, Security and Game Dev')
+          ),
+          h('nav', { className: 'command-bar', 'aria-label': 'Commands' },
+            link('#', 'help', ()=> onCmd('help')),
+            h('span', { className: 'sep' }, '|'),
+            link('about.html', 'about'),
+            h('span', { className: 'sep' }, '|'),
+            link('projects.html', 'projects'),
+            h('span', { className: 'sep' }, '|'),
+            link('skills.html', 'skills'),
+            h('span', { className: 'sep' }, '|'),
+            link('experience.html', 'experience'),
+            h('span', { className: 'sep' }, '|'),
+            link('contact.html', 'contact'),
+            h('span', { className: 'sep' }, '|'),
+            link('education.html', 'education'),
+            h('span', { className: 'sep' }, '|'),
+            link('certifications.html', 'certifications'),
+            h('span', { className: 'sep' }, '|'),
+            link('leadership.html', 'leadership'),
+            h('span', { className: 'sep' }, '|'),
+            link('#', 'clear', ()=> onCmd('clear'))
+          ),
+          h('div', { className: 'brand-actions' },
+            h('span', { className:'status-clock' }, '🌙')
+          )
+        );
+      }
+      function Card2D(){
+        return h('div', { className:'card-2d' },
+          h('div', { className:'card-content' },
+            h('img', { className: 'avatar', src: 'BRANDON.png', alt:'Brandon', width:96, height:96, decoding:'async', loading:'eager' }),
+            // social links removed per request
+          )
+        );
+      }
+      function Terminal(props){
+        const linesState = useState(["Welcome to Brandon's Portfolio", "Type 'help' to see available commands"]);
+        const lines = linesState[0];
+        const setLines = linesState[1];
+        const historyState = useState([]); const history = historyState[0]; const setHistory = historyState[1];
+        const idxState = useState(-1); const idx = idxState[0]; const setIdx = idxState[1];
+        const inputRef = useRef(null);
+
+        useEffect(()=>{
+          function onDown(){ if (inputRef.current) inputRef.current.focus(); }
+          document.addEventListener('keydown', onDown);
+          return ()=> document.removeEventListener('keydown', onDown);
+        },[]);
+
+        // Typing effect
+        function printTyped(outLines, speed=14){
+          const copy = Array.from(outLines);
+          function appendNextLine(){
+            if (!copy.length) return;
+            const line = copy.shift();
+            let i = 0;
+            setLines(prev=> [...prev, ""]);
+            const lineIndex = lines.length + (prev=>prev) ? 0 : 0; // not used further
+            const timer = setInterval(()=>{
+              i++;
+              setLines(prev=> {
+                const arr = prev.slice();
+                arr[arr.length-1] = line.slice(0, i);
+                return arr;
+              });
+              if (i >= line.length){
+                clearInterval(timer);
+                // Scroll to bottom after each line
+                try{ document.querySelector('.terminal-body').scrollTop = 1e9; }catch(e){}
+                appendNextLine();
+              }
+            }, speed);
+          }
+          appendNextLine();
+        }
+
+        const helpItems = [
+          { cmd: 'about', desc: 'Learn about me' },
+          { cmd: 'projects', desc: 'View my projects' },
+          { cmd: 'skills', desc: 'See my technical skills' },
+          { cmd: 'experience', desc: 'Work history and highlights' },
+          { cmd: 'contact', desc: 'How to reach me' },
+          { cmd: 'education', desc: 'Academic background' },
+          { cmd: 'certifications', desc: 'Industry certifications' },
+          { cmd: 'leadership', desc: 'Leadership and community' },
+          { cmd: 'ls', desc: 'List sections' },
+          { cmd: 'welcome', desc: 'Show the welcome message' },
+          { cmd: 'theme', desc: 'Toggle theme' },
+          { cmd: 'clear', desc: 'Clear the terminal' },
+          { cmd: 'sudo', desc: 'Try superuser (sandboxed)'}
+        ];
+
+        function helpStrings(){
+          const out = ["Available commands:"];
+          helpItems.forEach((it, i)=> out.push(`${i+1}. ${it.cmd} - ${it.desc}`));
+          return out;
+        }
+
+        const outputs = {
+          welcome: ["Hi I'm Brandon — Software & AI Engineer", "Interactive portfolio terminal", "Type 'help' to see available commands"],
+          about: [
+            'About Me',
+            "I’m Brandon Kimutai Kiplangat — a Cyber Security and Computer Networks student with a strong passion for building secure, efficient and scalable digital systems.",
+            'My work spans defensive security, network automation and game development, where I combine creativity with technical precision.',
+            'Currently pursuing my degree at Strathmore University (2024–2028), I’m exploring how systems, automation and intelligent design intersect to enhance cyber resilience and performance.',
+            'Beyond academics, I co-create at Cresenty Studio — a creative tech collective where I develop interactive games and innovative tools that blend technology, art and storytelling.',
+            'I’m passionate about building secure automation scripts, experimenting with emerging security frameworks and contributing to open-source projects that empower others to learn and innovate safely online.'
+          ],
+          projects: [
+            'Projects:',
+            '- integrity-cli: directory integrity (SHA‑256 + HMAC)',
+            '- password-hash-cli: Argon2id password hashing',
+            '- secure-delete-cli: secure file shredding',
+            '- file-encrypt-cli: AES‑256‑GCM file crypto'
+          ],
+          skills: [
+            'brandon@portfolio:~/skills',
+            '',
+            'Security   : Network Security, Ethical Hacking, Cryptography',
+            'Dev        : Python, Bash, GDScript',
+            'Game Dev   : Game Design, Scripting, 2D/3D Development (Godot Engine)',
+            'Tools      : Wireshark, Nmap, Metasploit, Git, Godot'
+          ],
+          experience: [
+            'brandon@portfolio:~/experience',
+            '',
+            'Cresenty Studio — Game Development (Indie) — 2024–Present',
+            '→ Co-developing 2D and 3D indie titles using the Godot Engine.',
+            '→ Designing gameplay systems, writing scripts in GDScript and optimizing performance.',
+            '→ Collaborating on creative direction, UI/UX and interactive storytelling.',
+            '',
+            'Security Projects — Self-directed Tooling (CLI, Crypto, Ops)',
+            '→ Building and maintaining security-focused command-line tools for encryption, integrity and secure file handling.',
+            '→ Implementing cryptographic standards (AES-256-GCM, SHA-256, Argon2id) for robust data protection.',
+            '→ Exploring secure automation and network defense through hands-on experimentation and scripting.'
+          ],
+          education: [
+            'Education:',
+            '- Strathmore University — BSc. Cyber Security and Computer Networks (2024–2028)'
+          ],
+          certifications: [
+            'Certifications:',
+            '- CompTIA Security+ (in-progress)',
+            '- TryHackMe / HackTheBox Labs'
+          ],
+          leadership: [
+            'Leadership & Community:',
+            '- Contributor in security/tools open-source',
+            '- Mentoring peers in scripting and networking basics'
+          ],
+          contact: [
+            'Contact:',
+            '- Email: brand0nkkim100@gmail.com',
+            '- GitHub: https://github.com/brandonkkip000-web',
+            '- Studio: https://cresentystudio.art'
+          ],
+          ls: ['about  projects  skills  experience  contact  education  certifications  leadership'],
+          sudo: ['Permission denied. This terminal is sandboxed.'],
+          theme: ['Theme toggled']
+        };
+
+        function exec(cmd){
+          if (!cmd) return;
+          setHistory([cmd, ...history]); setIdx(-1);
+          setLines(prev=> [...prev, `brandon@portfolio:~$ ${cmd}`]);
+          const name = cmd.split(' ')[0].toLowerCase();
+          if (name === 'clear') { setLines([]); return; }
+          if (name === 'help') { printTyped(helpStrings()); return; }
+          if (name === 'theme') {
+            // toggle theme and type confirmation
+            const html=document.documentElement; const next=html.getAttribute('data-theme')==='dark'?'light':'dark'; html.setAttribute('data-theme', next);
+            try{ localStorage.setItem('theme', next);}catch(e){}
+            printTyped(outputs.theme);
+            return;
+          }
+          const out = outputs[name] || [`Command not found: ${name}`, "Type 'help' to see available commands"];
+          printTyped(out);
+          // keep scrolled to bottom during typing
+          try{ document.querySelector('.terminal-body').scrollTop = 1e9; }catch(e){}
+        }
+
+        useEffect(()=>{ if (props.setExecRef) props.setExecRef.current = exec; });
+
+        function onKeyDown(e){
+          if (e.key==='Enter'){
+            const cmd = e.target.value.trim();
+            if (!cmd) return; exec(cmd); e.target.value='';
+          } else if (e.key==='ArrowUp'){
+            e.preventDefault(); const ni = Math.min(idx+1, history.length-1); setIdx(ni); e.target.value = history[ni] || '';
+          } else if (e.key==='ArrowDown'){
+            e.preventDefault(); const ni = Math.max(idx-1, -1); setIdx(ni); e.target.value = ni>=0 ? history[ni] : '';
+          }
+        }
+
+        return h('div', { className:'terminal-container', onClick: ()=> inputRef.current && inputRef.current.focus() },
+          h('div', { className:'terminal-header' },
+            h('div', { className:'terminal-buttons' },
+              h('span', { className:'terminal-button close' }),
+              h('span', { className:'terminal-button minimize' }),
+              h('span', { className:'terminal-button maximize' })
+            ),
+            h('div', { className:'terminal-title' }, 'brandon@portfolio:~'),
+            h('div', { className:'terminal-actions' }, h('span', { className:'status-clock' }, new Date().toLocaleTimeString()))
+          ),
+          h('div', { className:'terminal-body' },
+            h('div', { className:'terminal-content' },
+              ...lines.map((l,i)=> h('p', { key:i }, l)),
+              h('div', { className:'command-line' },
+                h('span', { className:'prompt' }, 'brandon@portfolio:~$'),
+                h('input', { className:'command-input', ref: inputRef, spellCheck:false, autoCapitalize:'off', autoComplete:'off', autoCorrect:'off', onKeyDown })
+              )
+            )
+          )
+        );
+      }
+
+      function App(){
+        const themeState = useState('dark');
+        const theme = themeState[0]; const setTheme = themeState[1];
+        const flipRef = useRef({ current: ()=>{} });
+        const execRef = useRef({ current: ()=>{} });
+        useEffect(()=>{ document.documentElement.setAttribute('data-theme', 'dark'); try{ localStorage.setItem('theme', 'dark'); }catch(e){} },[theme]);
+        function onHeaderCmd(c){ if (execRef.current) execRef.current(c); }
+        return h(React.Fragment, null,
+          h(Header, { onCmd: onHeaderCmd }),
+          h('div', { className:'retro-layout' },
+            h('div', { className:'card-rail' }, h(Card2D, null)),
+            h('div', { className:'retro-column' }, h(Terminal, { onExternalFlip: ()=>{}, setExecRef: execRef }))
+          )
+        );
+      }
+
+      try {
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(h(App));
+      } catch (e) {
+        const el = document.getElementById('root');
+        el.innerHTML = '<pre style="color:#f66; padding:1rem;">'+(e && (e.stack||e.message||String(e)))+'</pre>';
+        console.error(e);
+      }
+      });
+    </script>
+    <!-- Hover prefetch for instant navigation (no behavior change) -->
+    <script>
+      (function(){
+        var head=document.head;
+        function prefetch(href){
+          try{ var l=document.createElement('link'); l.rel='prefetch'; l.as='document'; l.href=href; head.appendChild(l);}catch(e){}
+        }
+        document.addEventListener('mouseover', function(e){
+          var a=e.target.closest && e.target.closest('a[href]');
+          if(!a) return; var href=a.getAttribute('href');
+          if(!href || href.indexOf('http')===0 || href.indexOf('#')===0) return;
+          prefetch(href);
+        }, {passive:true});
+      })();
+    </script>
+  </body>
+</html>

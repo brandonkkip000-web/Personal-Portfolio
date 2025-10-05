@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Experience — Brandon</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="retro-brand">
+      <div class="brand-left">
+        <h1 class="brand-name">Brandon</h1>
+        <span class="brand-sub">Networks, Security and Game Dev</span>
+      </div>
+      <nav class="command-bar"><a href="index.html">home</a></nav>
+      <div class="brand-actions"><span id="statusClock" class="status-clock"></span></div>
+    </header>
+    <main class="retro-layout" style="grid-template-columns: 1fr; height:auto;">
+      <article class="terminal-container" style="height:auto;">
+        <div class="terminal-header"><div class="terminal-title">brandon@portfolio:~/experience</div></div>
+        <div class="terminal-body">
+          <div class="terminal-content">
+            <pre style="margin:0; white-space: pre-wrap;">
+brandon@portfolio:~/experience
+
+Cresenty Studio — Game Development (Indie) — 2024–Present
+→ Co-developing 2D and 3D indie titles using the Godot Engine.
+→ Designing gameplay systems, writing scripts in GDScript, and optimizing performance.
+→ Collaborating on creative direction, UI/UX, and interactive storytelling.
+
+Security Projects — Self-directed Tooling (CLI, Crypto, Ops)
+→ Building and maintaining security-focused command-line tools for encryption, integrity, and secure file handling.
+→ Implementing cryptographic standards (AES-256-GCM, SHA-256, Argon2id) for robust data protection.
+→ Exploring secure automation and network defense through hands-on experimentation and scripting.
+            </pre>
+          </div>
+        </div>
+      </article>
+    </main>
+    <script>setInterval(()=>{const c=document.getElementById('statusClock');if(c){const n=new Date();c.textContent=n.toLocaleTimeString();}},1000);(function(){try{var t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+  </body>
+</html>
